@@ -1,0 +1,9 @@
+# Visual Studio Code
+temp
+tmp
+.vscode
+.history
+.idea
+lib
+node_modules
+/.angular/cache

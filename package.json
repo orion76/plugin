@@ -1,0 +1,32 @@
+{
+  "name": "@orion76/plugin",
+  "version": "0.1.3",
+  "description": "Plugin clear architecture common library",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "version-update": "npm version patch",
+    "build": "ng build orion76-plugin",
+    "build:github": "node ./node_modules/.bin/ng build orion76-plugin",
+    "test": "ng test --watch false --karma-config karma-terminal.conf.js",
+    "test:console": "ng test --karma-config karma-terminal.conf.js",
+    "test:browser": "ng test --karma-config karma.conf.js"
+  },
+  "author": "Paul Glazkow",
+  "license": "ISC",
+  "peerDependencies": {},
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.2.5",
+    "@angular/cli": "^19.2.5",
+    "@angular/platform-browser-dynamic": "^19.2.4",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.6.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "karma-spec-reporter": "0.0.36",
+    "ng-packagr": "^19.2.0"
+  }
+}
