@@ -22,12 +22,6 @@ jobs:
         registry-url: "https://registry.npmjs.org"
         scope: '@orion76'
 
-    - name: Debug
-      if: success()
-      run: npm config list
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
     - name: Install dependencies
       run: npm install
 
@@ -42,4 +36,4 @@ jobs:
       working-directory: ./lib
       run: npm publish
       env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
