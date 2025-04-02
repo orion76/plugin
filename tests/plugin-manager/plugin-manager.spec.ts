@@ -1,4 +1,4 @@
-import { IPluginManager } from "../../types";
+import { IPluginManager } from "../../src/types";
 import { PluginManagerTest } from "./plugin-manager.class";
 
 
@@ -9,8 +9,5 @@ describe('PluginManager', () => {
     })
     it('should created', () => {
         expect(pluginManager instanceof PluginManagerTest).toBeTruthy();
-    });
-    it('getter "definition"  should return plugin definition', () => {
-        // expect(plugin.definition).toEqual(pluginDefinition);
     });
 });

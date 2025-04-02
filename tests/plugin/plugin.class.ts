@@ -1,6 +1,8 @@
 
-import { PluginBase } from "../../plugin/plugin.base";
-import { IPluginDefinition } from "../../types";
+import { PluginBase } from "../../src/plugin/plugin.base";
+import { IPluginDefinition } from "../../src/types";
+
+
 
 
 export class PluginTest extends PluginBase {

@@ -1,4 +1,5 @@
-import { IPluginDefinition, IPlugin } from '../../types';
+
+import { IPluginDefinition, IPlugin } from '../../src/types';
 import {PluginTest} from './plugin.class';
 
 

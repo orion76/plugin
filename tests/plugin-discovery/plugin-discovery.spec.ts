@@ -1,5 +1,5 @@
 
-import { IPluginDiscovery } from "../../types";
+import { IPluginDiscovery } from "../../src/types";
 import { PluginDiscoveryTest, testPluginDefinitions } from "./plugin-discovery.class";
 
 

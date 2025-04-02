@@ -1,6 +1,5 @@
-import { PluginDiscoveryBase } from "../../plugin-discovery/plugin-discovery.base";
-import { IPluginDefinition } from "../../types";
-
+import { PluginDiscoveryBase } from "../../src/plugin-discovery/plugin-discovery.base";
+import { IPluginDefinition } from "../../src/types";
 
 
 const TEST_PLUGIN_TYPE = 'TEST_PLUGIN_TYPE';
@@ -13,7 +12,6 @@ export const testPluginDefinitions: IPluginDefinition[] = [
     { id: 'id-5', label: 'plugin-5', type: TEST_PLUGIN_TYPE },
     { id: 'id-6', label: 'plugin-6', type: TEST_PLUGIN_TYPE },
 ];
-
 
 export class PluginDiscoveryTest extends PluginDiscoveryBase {
     protected definitions: IPluginDefinition[] = testPluginDefinitions;

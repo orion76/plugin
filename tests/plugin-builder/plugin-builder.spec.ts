@@ -1,6 +1,6 @@
 
 
-import { IPluginBuilder } from "../../types";
+import { IPluginBuilder } from "../../src/types";
 import { pluginDefinitionTest, pluginDefinitionTestWithPluginClass } from "./data";
 import { PluginBuilderTest } from "./plugin-builder.class";
 import { PluginTestOne, PluginTestThree } from "./plugin.class";
