@@ -1,7 +1,4 @@
-// export interface IType<T extends { new(...args: unknown[]): unknown }> {
-// 	new(...args: ConstructorParameters<T>): T;
-// }
-
+export type TOneOrTwoTuple = [string, string] | [string];
 export interface IPluginDefinition<P extends IPlugin = IPlugin> {
 	type: string;
 	id: string;

@@ -1,4 +1,4 @@
-import { PluginDeriverBase } from "../../../src/deriver/plugin-deriver.base";
+import { PluginDeriverBase } from "../../../src/plugin-discovery/derivatives/plugin-deriver.base";
 import { arrayToMap } from "../../../src/utils";
 import { derivativeDefinitions } from "./derivative-definitions.data";
 import { ITestPluginDerivative } from "./types";

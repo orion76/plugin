@@ -1,4 +1,4 @@
-import { PluginDiscoveryWithDerivativesDecorator } from "../../../src/plugin-discovery/plugin-discovery-with-derivatives.decorator";
+import { PluginDiscoveryWithDerivativesDecorator } from "../../../src/plugin-discovery/derivatives/plugin-discovery-with-derivatives.decorator";
 import { IPlugin, IPluginDefinitionWithDeriver, IPluginDeriver, IPluginDiscovery } from "../../../src/types";
 import { PluginDiscoveryTest } from "../plugin-discovery.class";
 import { ITestPluginDerivative } from "./types";

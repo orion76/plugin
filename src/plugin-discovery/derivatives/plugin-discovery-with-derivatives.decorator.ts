@@ -1,5 +1,5 @@
-import { IPluginDefinitionWithDeriver, IPluginDeriver, IPluginDiscovery } from '../types';
-import { TOneOrTwoTuple } from './types';
+import { IPluginDefinitionWithDeriver, IPluginDeriver, IPluginDiscovery, TOneOrTwoTuple } from '../../types';
+
 
 function getUndefinedOrThrowError(exceptionOnInvalid: boolean, errorFactory: () => void): undefined {
 	if (!exceptionOnInvalid) {
@@ -15,21 +15,22 @@ export abstract class PluginDiscoveryWithDerivativesDecorator<
 > implements IPluginDiscovery<PluginDef> {
 
 	protected abstract decorated: IPluginDiscovery<BasePluginDef>;
-	protected abstract derivers: Map<string, IPluginDeriver<DerivDef>>;
+
 	protected abstract createDeriver(basePLuginDefinition: BasePluginDef): IPluginDeriver<DerivDef>;
 
-	private _definitions: Map<string, PluginDef> = new Map();
+	protected derivers: Map<string, IPluginDeriver<DerivDef>> = new Map();
+	private _definitionsCache: Map<string, PluginDef> = new Map();
 
 
 	getDefinition(pluginId: string, exceptionOnInvalid?: boolean): PluginDef | undefined {
-		if (!this._definitions.has(pluginId)) {
+		if (!this._definitionsCache.has(pluginId)) {
 			const definition = this.createPluginDefinition(pluginId, exceptionOnInvalid);
 			if (definition) {
-				this._definitions.set(pluginId, definition)
+				this._definitionsCache.set(pluginId, definition)
 			}
 		}
 
-		return this._definitions.get(pluginId);
+		return this._definitionsCache.get(pluginId);
 	}
 	getDefinitions(): PluginDef[] {
 		const basePluginDefinitions = this.decorated.getDefinitions();
@@ -105,17 +106,19 @@ export abstract class PluginDiscoveryWithDerivativesDecorator<
 			const { id: basePluginId } = basePluginDef;
 			const deriver = this.getDeriver(basePluginDef);
 			const derivativeDefinitions = deriver.getDerivativeDefinitions(basePluginDef);
+
 			derivativeDefinitions.forEach(derivativeDef => {
 				const derivativeId = deriver.getDerivativeId(derivativeDef);
 				const pluginId = this.encodePluginId(basePluginId, derivativeId);
-				if (!this._definitions.has(pluginId)) {
+				
+				if (!this._definitionsCache.has(pluginId)) {
 					const pluginDef = this.mergeDerivativeDefinition(pluginId, basePluginDef, derivativeDef);
-					this._definitions.set(pluginId, pluginDef);
+					this._definitionsCache.set(pluginId, pluginDef);
 				}
 
 			})
 		})
 
-		return Array.from(this._definitions.values());
+		return Array.from(this._definitionsCache.values());
 	}
 }

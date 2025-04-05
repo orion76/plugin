@@ -1,4 +1,4 @@
-import { IPluginDeriver } from "../types";
+import { IPluginDeriver } from "../../types";
 
 export abstract class PluginDeriverBase<D extends object> implements IPluginDeriver<D> {
     protected abstract derivatives: Map<string, D>;
