@@ -5,7 +5,7 @@ import { PluginBuilderTest } from "../plugin-builder/plugin-builder.class";
 import { PluginDiscoveryTest } from "../plugin-discovery/plugin-discovery.class";
 
 interface IPluginTest extends IPlugin {
-
+    metnodOne(): void;
 }
 
 const TEST_PLUGIN_TYPE = 'TEST_PLUGIN_TYPE';

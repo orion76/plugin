@@ -1,0 +1,1 @@
+export type TOneOrTwoTuple = [string, string] | [string];

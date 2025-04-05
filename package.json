@@ -2,6 +2,7 @@
   "name": "@orion76/plugin",
   "version": "0.1.4",
   "description": "Plugin clear architecture common library",
+  "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -14,12 +15,13 @@
   },
   "author": "Paul Glazkow",
   "license": "ISC",
-  "peerDependencies": {},
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.5",
     "@angular/cli": "^19.2.5",
     "@angular/platform-browser-dynamic": "^19.2.4",
+    "@eslint/js": "^9.23.0",
     "@types/jasmine": "~5.1.0",
+    "eslint": "^9.23.0",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -27,6 +29,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "karma-spec-reporter": "0.0.36",
-    "ng-packagr": "^19.2.0"
+    "ng-packagr": "^19.2.0",
+    "typescript-eslint": "^8.29.0"
   }
 }

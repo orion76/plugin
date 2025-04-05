@@ -1,17 +1,21 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
-const path = require('path');
+import { join, dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
-module.exports = function (config) {
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+
+export default function (config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      'karma-jasmine',
+      'karma-chrome-launcher',
+      'karma-jasmine-html-reporter',
+      'karma-coverage',
+      '@angular-devkit/build-angular/plugins/karma'
     ],
     client: {
       jasmine: {
@@ -26,7 +30,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: path.join(__dirname, '../../coverage/entity'),
+      dir: join(__dirname, '../../coverage/entity'),
       subdir: '.',
       reporters: [
         { type: 'html' },
@@ -36,8 +40,8 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeCustom: {
         base: 'Chrome',
-        flags:[
-          '--user-data-dir='+path.resolve(__dirname, '../.chrome')
+        flags: [
+          '--user-data-dir=' + resolve(__dirname, '../.chrome')
         ]
       }
     },

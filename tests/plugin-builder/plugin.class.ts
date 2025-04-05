@@ -5,6 +5,10 @@ import { IPluginDefinitionTest, IPluginTest } from "./types";
 export class PluginTestOne extends PluginBase implements IPluginTest {
     constructor(protected _definition: IPluginDefinitionTest) {
         super();
+
+    }
+    metnodOne(): number {
+        return 42;
     }
 
     get definition(): IPluginDefinitionTest {
@@ -25,6 +29,9 @@ export class PluginTestOne extends PluginBase implements IPluginTest {
 export class PluginTestThree extends PluginBase implements IPluginTest {
     constructor(protected _definition: IPluginDefinitionTest) {
         super();
+    }
+    metnodOne(): number {
+        return 3;
     }
 
     get definition(): IPluginDefinitionTest {

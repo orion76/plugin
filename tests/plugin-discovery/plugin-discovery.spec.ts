@@ -1,6 +1,7 @@
 
 import { IPluginDiscovery } from "../../src/types";
-import { PluginDiscoveryTest, testPluginDefinitions } from "./plugin-discovery.class";
+import { PluginDiscoveryTest } from "./plugin-discovery.class";
+import { testPluginDefinitions } from "./test-plugin-definitions.data";
 
 
 describe('PluginDiscovery', () => {
@@ -26,7 +27,7 @@ describe('PluginDiscovery', () => {
             });
         });
         it('the plugin definition with pluginId is present', () => {
-            const PLUGIN_ID = 'id-4';
+            const PLUGIN_ID = 'id-3';
             let exceptionOnInvalid = true;
             expect(() => pluginDiscovery.getDefinition(PLUGIN_ID, exceptionOnInvalid)).not.toThrow();
 
@@ -45,7 +46,7 @@ describe('PluginDiscovery', () => {
     });
     describe('method hasDefinition(pluginId: string): boolean;', () => {
         it('definition for pluginId is present, should return TRUE', () => {
-            const PLUGIN_ID = 'id-4';
+            const PLUGIN_ID = 'id-3';
             expect(pluginDiscovery.hasDefinition(PLUGIN_ID)).toEqual(true);
         });
         it('definition for pluginId is NOT present, should return FALSE', () => {
