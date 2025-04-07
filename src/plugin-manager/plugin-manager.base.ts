@@ -1,4 +1,4 @@
-import { PluginInstanceNotCreatedException } from '../exceptions/plugin-instance-not-created';
+import { PluginInstanceNotCreatedException } from '../exceptions';
 import { IPluginDiscovery } from '../types';
 import { IPluginManager } from '../types';
 import { IPlugin } from '../types';

@@ -1,11 +1,10 @@
 import { PluginDeriverBase } from "../../../src/plugin-discovery/derivatives/plugin-deriver.base";
-import { arrayToMap } from "../../../src/utils";
 import { derivativeDefinitions } from "./derivative-definitions.data";
 import { ITestPluginDerivative } from "./types";
 
 
 export class PluginDeriverTest extends PluginDeriverBase<ITestPluginDerivative> {
-    protected override derivatives: Map<string, ITestPluginDerivative> = arrayToMap<ITestPluginDerivative>(derivativeDefinitions, (d) => d.derivativeId);
+    protected override derivatives=derivativeDefinitions;
 
     getDerivativeId(derivative: ITestPluginDerivative): string {
         return derivative.derivativeId;

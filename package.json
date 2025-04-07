@@ -6,7 +6,8 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "version-update": "npm version patch",
+    "update-version": "npm version patch",
+    "uv": "npm run update-version",
     "build": "ng build orion76-plugin",
     "build:github": "node ./node_modules/.bin/ng build orion76-plugin",
     "test": "ng test --watch false --karma-config karma-terminal.conf.js",
@@ -31,5 +32,13 @@
     "karma-spec-reporter": "0.0.36",
     "ng-packagr": "^19.2.0",
     "typescript-eslint": "^8.29.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orion76/plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/orion76/plugin/issues"
+  },
+  "homepage": "https://github.com/orion76/plugin#readme"
 }
