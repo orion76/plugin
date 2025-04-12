@@ -6,7 +6,7 @@ const TEST_PLUGIN_TYPE = 'TEST_PLUGIN_TYPE';
 
 export const pluginDefinitionTest: IPluginDefinitionTest = {
     id: 'plugin-id',
-    type: TEST_PLUGIN_TYPE,
+    pluginType: TEST_PLUGIN_TYPE,
     label: "plugin label",
     pluginClass: PluginTestOne,
     propertyOne: false,

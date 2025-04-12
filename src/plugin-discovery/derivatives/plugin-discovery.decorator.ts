@@ -1,4 +1,5 @@
-import { IPluginDefinitionWithDeriver, IPluginDeriver, IPluginDiscovery, TOneOrTwoTuple } from '../../types';
+import { PluginException } from '../../exceptions';
+import { IPluginDefinition, IPluginDeriver, IPluginDiscovery, TOneOrTwoTuple } from '../../types';
 
 
 function getUndefinedOrThrowError(exceptionOnInvalid: boolean, errorFactory: () => void): undefined {
@@ -8,21 +9,28 @@ function getUndefinedOrThrowError(exceptionOnInvalid: boolean, errorFactory: () 
 	throw errorFactory();
 }
 
-export abstract class PluginDiscoveryWithDerivativesDecorator<
-	BasePluginDef extends IPluginDefinitionWithDeriver = IPluginDefinitionWithDeriver,
+export abstract class PluginDiscoveryDecorator<
+	BasePluginDef extends IPluginDefinition = IPluginDefinition,
 	DerivDef extends object = object,
 	PluginDef extends BasePluginDef & DerivDef = BasePluginDef & DerivDef
-> implements IPluginDiscovery<PluginDef> {
+> implements IPluginDiscovery<BasePluginDef | PluginDef> {
+
+	get pluginType() {
+		return this.decorated.pluginType;
+	};
 
 	protected abstract decorated: IPluginDiscovery<BasePluginDef>;
 
 	protected abstract createDeriver(basePLuginDefinition: BasePluginDef): IPluginDeriver<DerivDef>;
 
-	protected derivers: Map<string, IPluginDeriver<DerivDef>> = new Map();
-	private _definitionsCache: Map<string, PluginDef> = new Map();
+	protected derivers: Map<string, IPluginDeriver<DerivDef> | undefined> = new Map();
+	private _definitionsCache: Map<string, PluginDef | BasePluginDef> = new Map();
 
+	protected hasDeriver(basePLuginDefinition: BasePluginDef): boolean {
+		return !!basePLuginDefinition.deriverClass;
+	}
 
-	getDefinition(pluginId: string, exceptionOnInvalid?: boolean): PluginDef | undefined {
+	getDefinition(pluginId: string, exceptionOnInvalid?: boolean): BasePluginDef | PluginDef | undefined {
 		if (!this._definitionsCache.has(pluginId)) {
 			const definition = this.createPluginDefinition(pluginId, exceptionOnInvalid);
 			if (definition) {
@@ -32,7 +40,7 @@ export abstract class PluginDiscoveryWithDerivativesDecorator<
 
 		return this._definitionsCache.get(pluginId);
 	}
-	getDefinitions(): PluginDef[] {
+	getDefinitions(): (BasePluginDef | PluginDef)[] {
 		const basePluginDefinitions = this.decorated.getDefinitions();
 
 		return this.getDerivatives(basePluginDefinitions);
@@ -44,23 +52,19 @@ export abstract class PluginDiscoveryWithDerivativesDecorator<
 	protected mergeDerivativeDefinition(id: string, pluginDefinition: BasePluginDef, derivativeDefinition: DerivDef): PluginDef {
 		return { ...pluginDefinition, ...derivativeDefinition, id } as PluginDef;
 	}
-	protected createPluginDefinition(pluginId: string, exceptionOnInvalid = false): PluginDef | undefined {
+	protected createPluginDefinition(pluginId: string, exceptionOnInvalid = false): PluginDef | BasePluginDef | undefined {
 		const [basePluginId, derivativeId] = this.decodePluginId(pluginId);
-
-		if (!derivativeId) {
-			return getUndefinedOrThrowError(
-				exceptionOnInvalid,
-				() => new Error(`Plugin Id does not contain a derivative ID. Plugin ID: ${pluginId}`)
-			)
-		}
-
 		const basePluginDefinition = this.decorated.getDefinition(basePluginId);
 
 		if (!basePluginDefinition) {
 			return getUndefinedOrThrowError(
 				exceptionOnInvalid,
-				() => new Error(`Base plugin definition not found. Plugin ID: ${pluginId}`)
+				() => new PluginException(this.pluginType, pluginId, 'Base plugin definition not found.')
 			)
+		}
+
+		if (!derivativeId) {
+			return basePluginDefinition;
 		}
 
 		const deriver = this.getDeriver(basePluginDefinition);
@@ -68,7 +72,7 @@ export abstract class PluginDiscoveryWithDerivativesDecorator<
 		if (!deriver) {
 			return getUndefinedOrThrowError(
 				exceptionOnInvalid,
-				() => new Error(`Deriver for base plugin ID is missing. Plugin ID: ${basePluginId}`)
+				() => new PluginException(this.pluginType, pluginId, 'Deriver for base plugin ID is missing.')
 			)
 		}
 
@@ -76,7 +80,7 @@ export abstract class PluginDiscoveryWithDerivativesDecorator<
 		if (!derivativePluginDefinition) {
 			return getUndefinedOrThrowError(
 				exceptionOnInvalid,
-				() => new Error(`Derivative definitio for derivative ID is missing: ${derivativeId}`)
+				() => new PluginException(this.pluginType, pluginId, 'Derivative definitio for derivative ID is missing.')
 			)
 		}
 
@@ -89,28 +93,35 @@ export abstract class PluginDiscoveryWithDerivativesDecorator<
 		return pluginId.split(':') as TOneOrTwoTuple;
 	}
 	protected encodePluginId(basePluginId: string, derivativeId: string) {
-		return `${basePluginId}:${derivativeId}`;
+		return `${basePluginId}:${derivativeId} `;
 	}
-	protected getDeriver(basePLuginDefinition: BasePluginDef): IPluginDeriver<DerivDef> {
+	protected getDeriver(basePLuginDefinition: BasePluginDef): IPluginDeriver<DerivDef> | undefined {
 		const { id: pluginId } = basePLuginDefinition;
+
 		if (!this.derivers.has(pluginId)) {
-			const deriver = this.createDeriver(basePLuginDefinition);
+			const deriver = this.hasDeriver(basePLuginDefinition) ? this.createDeriver(basePLuginDefinition) : undefined;
 			this.derivers.set(pluginId, deriver);
 		}
 		return this.derivers.get(pluginId)!;
 	}
 
-	protected getDerivatives(basePluginDefinitions: BasePluginDef[]): PluginDef[] {
+	protected getDerivatives(basePluginDefinitions: BasePluginDef[]): (BasePluginDef | PluginDef)[] {
 
 		basePluginDefinitions.forEach((basePluginDef) => {
 			const { id: basePluginId } = basePluginDef;
 			const deriver = this.getDeriver(basePluginDef);
+			if (!deriver) {
+				if (!this._definitionsCache.has(basePluginId)) {
+					this._definitionsCache.set(basePluginId, basePluginDef);
+				}
+				return;
+			}
 			const derivativeDefinitions = deriver.getDerivativeDefinitions(basePluginDef);
 
 			derivativeDefinitions.forEach(derivativeDef => {
 				const derivativeId = deriver.getDerivativeId(derivativeDef);
 				const pluginId = this.encodePluginId(basePluginId, derivativeId);
-				
+
 				if (!this._definitionsCache.has(pluginId)) {
 					const pluginDef = this.mergeDerivativeDefinition(pluginId, basePluginDef, derivativeDef);
 					this._definitionsCache.set(pluginId, pluginDef);

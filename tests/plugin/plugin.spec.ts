@@ -8,7 +8,7 @@ const PLUGIN_TEST = 'PLUGIN_TEST'
 const pluginDefinition: IPluginDefinition = {
 	id: 'testPluginId',
 	label: 'testPluginLabel',
-	type: PLUGIN_TEST
+	pluginType: PLUGIN_TEST
 }
 
 describe('Plugin', () => {

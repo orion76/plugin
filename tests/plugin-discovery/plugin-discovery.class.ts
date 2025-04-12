@@ -1,10 +1,12 @@
 import { PluginDiscoveryBase } from "../../src/plugin-discovery/plugin-discovery.base";
-import { IPluginDefinitionWithDeriver } from "../../src/types";
+import { IPluginDefinition } from "../../src/types";
+import { TEST_PLUGIN_TYPE } from "./constants";
 import { testPluginDefinitions } from "./test-plugin-definitions.data";
 
 
 
-export class PluginDiscoveryTest extends PluginDiscoveryBase<IPluginDefinitionWithDeriver> {
-    protected definitions: IPluginDefinitionWithDeriver[] = testPluginDefinitions;
+export class PluginDiscoveryTest extends PluginDiscoveryBase<IPluginDefinition> {
+    override pluginType = TEST_PLUGIN_TYPE;
+    protected definitions: IPluginDefinition[] = testPluginDefinitions;
 
 }

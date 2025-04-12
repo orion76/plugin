@@ -1,4 +1,4 @@
-export class PluginExceptionBase extends Error {
+export class PluginException extends Error {
 	constructor(private _pluginType: string, private _pluginId: string, message: string) {
 		super(message);
 	}

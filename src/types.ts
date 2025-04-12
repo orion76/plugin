@@ -1,15 +1,11 @@
 export type TOneOrTwoTuple = [string, string] | [string];
-export interface IPluginDefinition<P extends IPlugin = IPlugin> {
-	type: string;
+export interface IPluginDefinition<P extends IPlugin = IPlugin, D extends object = object> {
+	pluginType: string;
 	id: string;
 	label: string;
 	pluginClass?: IType<P>;
-
+	deriverClass?: IType<IPluginDeriver<D>>;
 	disabled?: boolean;
-}
-
-export interface IPluginDefinitionWithDeriver<P extends IPlugin = IPlugin, D extends object = object> extends IPluginDefinition<P> {
-	deriverClass: IType<IPluginDeriver<D>>;
 }
 
 export interface IPlugin {
@@ -34,6 +30,7 @@ export interface IPluginBuilder<P extends IPlugin = IPlugin> {
 }
 
 export interface IPluginDiscovery<D extends IPluginDefinition = IPluginDefinition> {
+	pluginType: string;
 
 	getDefinition(pluginId: string, exceptionOnInvalid?: boolean): D | undefined;
 
