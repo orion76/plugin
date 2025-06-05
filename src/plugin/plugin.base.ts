@@ -13,4 +13,8 @@ export abstract class PluginBase implements IPlugin {
 	get label(): string {
 		return this.definition.label;
 	}
+
+	get type(): string {
+		return this.definition.type;
+	}
 }

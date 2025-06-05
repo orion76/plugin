@@ -6,7 +6,7 @@ import { testPluginDefinitions } from "./test-plugin-definitions.data";
 
 
 export class PluginDiscoveryTest extends PluginDiscoveryBase<IPluginDefinition> {
-    override pluginType = TEST_PLUGIN_TYPE;
+    override type = TEST_PLUGIN_TYPE;
     protected definitions: IPluginDefinition[] = testPluginDefinitions;
 
 }

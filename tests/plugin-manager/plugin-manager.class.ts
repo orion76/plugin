@@ -11,7 +11,7 @@ interface IPluginTest extends IPlugin {
 const TEST_PLUGIN_TYPE = 'TEST_PLUGIN_TYPE';
 
 export class PluginManagerTest extends PluginManagerBase<IPluginTest> {
-    pluginType = TEST_PLUGIN_TYPE;
+    type = TEST_PLUGIN_TYPE;
     protected readonly pluginDiscovery: IPluginDiscovery = new PluginDiscoveryTest();
     protected readonly pluginBuilder: IPluginBuilder = new PluginBuilderTest()
 }

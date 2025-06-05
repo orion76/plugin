@@ -3,7 +3,7 @@ import { TEST_PLUGIN_TYPE } from "../constants";
 
 
 export interface ITestPluginDefinition extends IPluginDefinition {
-    pluginType: typeof TEST_PLUGIN_TYPE,
+    type: typeof TEST_PLUGIN_TYPE,
     pluginDefinitionField: string
 }
 

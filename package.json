@@ -10,9 +10,15 @@
     "uv": "npm run update-version",
     "build": "ng build orion76-plugin",
     "build:github": "node ./node_modules/.bin/ng build orion76-plugin",
+    "build:watch": "ng build --watch",
+    "bw": "npm run build:watch",
     "test": "ng test --watch false --karma-config karma-terminal.conf.js",
     "test:console": "ng test --karma-config karma-terminal.conf.js",
-    "test:browser": "ng test --karma-config karma.conf.js"
+    "test:browser": "ng test --karma-config karma.conf.js",
+    "tc": "npm run test:console",
+    "tb": "npm run test:browser",
+    "install:local": "./scripts/install_local.sh",
+    "il": "npm run install:local"
   },
   "author": "Paul Glazkow",
   "license": "ISC",

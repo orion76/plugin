@@ -13,20 +13,20 @@ describe('class PluginDiscoveryWithDerivativeDecorator', () => {
         expect(decorator).toBeInstanceOf(PluginDiscoveryDecoratorTest);
     });
 
-    describe('method getDefinition(pluginId:string)', () => {
+    describe('method getDefinition(id:string)', () => {
         describe('result SUCCES', () => {
-            it('pluginId for existed plugin definition, should return plugin definition', () => {
+            it('id for existed plugin definition, should return plugin definition', () => {
                 const basePluginDefinition = testPluginDefinitions[0];
                 const derivativeDefinition = derivativeDefinitions[0];
 
                 const basePluginId = basePluginDefinition.id;
                 const derivativeId = derivativeDefinition.derivativeId;
 
-                const pluginId = `${basePluginId}:${derivativeId}`
+                const id = `${basePluginId}:${derivativeId}`
 
-                const pluginDefinition = decorator.getDefinition(pluginId);
+                const pluginDefinition = decorator.getDefinition(id);
                 expect(pluginDefinition).toBeDefined();
-                expect(pluginDefinition!.id).toEqual(pluginId);
+                expect(pluginDefinition!.id).toEqual(id);
             });
         });
         describe('Base plugin definition is missing.', () => {
@@ -34,9 +34,9 @@ describe('class PluginDiscoveryWithDerivativeDecorator', () => {
             // return undefined
             it('exceptionOnInvalid === undefined, should return undefined', () => {
                 const exceptionOnInvalid = undefined;
-                const pluginId = `not-existed-plugin-id`;
+                const id = `not-existed-plugin-id`;
 
-                const definition = decorator.getDefinition(pluginId, exceptionOnInvalid);
+                const definition = decorator.getDefinition(id, exceptionOnInvalid);
 
                 expect(definition).toBeUndefined();
             });
@@ -44,20 +44,20 @@ describe('class PluginDiscoveryWithDerivativeDecorator', () => {
             // return undefined
             it('exceptionOnInvalid === false, should return undefined', () => {
                 const exceptionOnInvalid = undefined;
-                const pluginId = `not-existed-plugin-id`;
+                const id = `not-existed-plugin-id`;
 
-                const definition = decorator.getDefinition(pluginId, exceptionOnInvalid);
+                const definition = decorator.getDefinition(id, exceptionOnInvalid);
 
                 expect(definition).toBeUndefined();
             });
 
             // throw Error
-            it('pluginId for not existed plugin definition, exceptionOnInvalid === true, should throw Error ', () => {
+            it('id for not existed plugin definition, exceptionOnInvalid === true, should throw Error ', () => {
                 const exceptionOnInvalid = true;
-                const pluginId = `not-existed-plugin-id`;
+                const id = `not-existed-plugin-id`;
 
-                expect(() => decorator.getDefinition(pluginId, exceptionOnInvalid))
-                    .toThrow(new PluginException(decorator.pluginType, pluginId, 'Base plugin definition not found.'));
+                expect(() => decorator.getDefinition(id, exceptionOnInvalid))
+                    .toThrow(new PluginException(decorator.type, id, 'Base plugin definition not found.'));
             });
         })
         describe('Base plugin definition is exists.', () => {
@@ -65,55 +65,55 @@ describe('class PluginDiscoveryWithDerivativeDecorator', () => {
             // return undefined
             it('Derivative ID is missing in plugin ID, should retunr base plugin definition', () => {
                 const basePluginDefinition = testPluginDefinitions[0];
-                const pluginId = basePluginDefinition.id;
+                const id = basePluginDefinition.id;
 
-                const definition = decorator.getDefinition(pluginId);
+                const definition = decorator.getDefinition(id);
 
                 expect(definition).toBeDefined();
-                expect(definition!.id).toEqual(pluginId);
+                expect(definition!.id).toEqual(id);
             });
 
         })
         describe('ID not exists', () => {
 
             // return undefined
-            it('pluginId for not existed plugin definition, exceptionOnInvalid === undefined, should return undefined', () => {
+            it('id for not existed plugin definition, exceptionOnInvalid === undefined, should return undefined', () => {
                 const exceptionOnInvalid = undefined;
-                const pluginId = `not-existed-plugin-id:not-existed-derivative`;
+                const id = `not-existed-plugin-id:not-existed-derivative`;
 
-                const definition = decorator.getDefinition(pluginId, exceptionOnInvalid);
+                const definition = decorator.getDefinition(id, exceptionOnInvalid);
 
                 expect(definition).toBeUndefined();
             });
 
             // return undefined
-            it('pluginId for not existed plugin definition, exceptionOnInvalid === false, should return undefined', () => {
+            it('id for not existed plugin definition, exceptionOnInvalid === false, should return undefined', () => {
                 const exceptionOnInvalid = false;
-                const pluginId = `not-existed-plugin-id:not-existed-derivative`;
+                const id = `not-existed-plugin-id:not-existed-derivative`;
 
-                const definition = decorator.getDefinition(pluginId, exceptionOnInvalid);
+                const definition = decorator.getDefinition(id, exceptionOnInvalid);
 
                 expect(definition).toBeUndefined();
             });
 
             // throw Error
-            it('pluginId for not existed plugin definition, exceptionOnInvalid === true, should throw Error ', () => {
+            it('id for not existed plugin definition, exceptionOnInvalid === true, should throw Error ', () => {
                 const exceptionOnInvalid = true;
-                const pluginId = `not-existed-plugin-id:not-existed-derivative`;
+                const id = `not-existed-plugin-id:not-existed-derivative`;
 
-                expect(() => decorator.getDefinition(pluginId, exceptionOnInvalid))
-                    .toThrow(new PluginException(decorator.pluginType, pluginId, 'Base plugin definition not found.'));
+                expect(() => decorator.getDefinition(id, exceptionOnInvalid))
+                    .toThrow(new PluginException(decorator.type, id, 'Base plugin definition not found.'));
             });
         });
 
         // +++ ID without drivative id
         describe('Plugin ID not contains derivative id', () => {
             // return undefined
-            it('pluginId not contains derivative id, should return base plugin definition', () => {
+            it('id not contains derivative id, should return base plugin definition', () => {
                 const exceptionOnInvalid = undefined;
-                const pluginId = `plugin-id-1`;
+                const id = `plugin-id-1`;
 
-                const definition = decorator.getDefinition(pluginId, exceptionOnInvalid);
+                const definition = decorator.getDefinition(id, exceptionOnInvalid);
 
                 expect(definition).toBeDefined();
             });
@@ -133,18 +133,18 @@ describe('class PluginDiscoveryWithDerivativeDecorator', () => {
         });
     });
 
-    describe('method hasDefinition(pluginId)', () => {
-        it('pluginId is existed plugin ID, should return true', () => {
+    describe('method hasDefinition(id)', () => {
+        it('id is existed plugin ID, should return true', () => {
             const baseDefinitionWithDeriverClassId = 'plugin-id-1';
             const derivativeId = 'derivative-id-5'
-            const pluginId = `${baseDefinitionWithDeriverClassId}:${derivativeId}`
+            const id = `${baseDefinitionWithDeriverClassId}:${derivativeId}`
 
-            expect(decorator.hasDefinition(pluginId)).toEqual(true);
+            expect(decorator.hasDefinition(id)).toEqual(true);
         });
-        it('pluginId is NOT existed plugin ID, should return false', () => {
-            const pluginId = 'FAKE ID'
+        it('id is NOT existed plugin ID, should return false', () => {
+            const id = 'FAKE ID'
 
-            expect(decorator.hasDefinition(pluginId)).toEqual(false);
+            expect(decorator.hasDefinition(id)).toEqual(false);
         });
     });
 });

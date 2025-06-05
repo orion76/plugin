@@ -1,8 +1,8 @@
 import { PluginException } from "./plugin-exception.base";
 
 export class PluginDefinitionNotFoundException extends PluginException {
-	constructor(pluginType: string, pluginId: string) {
+	constructor(type: string, id: string) {
 		const _message = 'Plugin definition not found';
-		super(pluginType, pluginId, _message);
+		super(type, id, _message);
 	}
 }

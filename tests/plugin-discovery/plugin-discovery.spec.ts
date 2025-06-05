@@ -12,8 +12,8 @@ describe('PluginDiscovery', () => {
     it('should created', () => {
         expect(pluginDiscovery instanceof PluginDiscoveryTest).toBeTruthy();
     });
-    describe('method getDefinition(pluginId: string, exceptionOnInvalid: boolean): IPluginDefinition | undefined ', () => {
-        describe('pluginId is missing', () => {
+    describe('method getDefinition(id: string, exceptionOnInvalid: boolean): IPluginDefinition | undefined ', () => {
+        describe('id is missing', () => {
             it('is argument exceptionOnInvalid has value "true", should throw error', () => {
                 const FAKE_PLUGIN_ID = 'FAKE_PLUGIN_ID';
                 const exceptionOnInvalid = true;
@@ -26,7 +26,7 @@ describe('PluginDiscovery', () => {
                 expect(pluginDiscovery.getDefinition(FAKE_PLUGIN_ID, exceptionOnInvalid)).toBeUndefined();
             });
         });
-        it('the plugin definition with pluginId is present', () => {
+        it('the plugin definition with id is present', () => {
             const PLUGIN_ID = 'plugin-id-3';
             let exceptionOnInvalid = true;
             expect(() => pluginDiscovery.getDefinition(PLUGIN_ID, exceptionOnInvalid)).not.toThrow();
@@ -44,12 +44,12 @@ describe('PluginDiscovery', () => {
 
         });
     });
-    describe('method hasDefinition(pluginId: string): boolean;', () => {
-        it('definition for pluginId is present, should return TRUE', () => {
+    describe('method hasDefinition(id: string): boolean;', () => {
+        it('definition for id is present, should return TRUE', () => {
             const PLUGIN_ID = 'plugin-id-3';
             expect(pluginDiscovery.hasDefinition(PLUGIN_ID)).toEqual(true);
         });
-        it('definition for pluginId is NOT present, should return FALSE', () => {
+        it('definition for id is NOT present, should return FALSE', () => {
             const FAKE_PLUGIN_ID = 'FAKE_PLUGIN_ID';
             expect(pluginDiscovery.hasDefinition(FAKE_PLUGIN_ID)).toEqual(false);
         });

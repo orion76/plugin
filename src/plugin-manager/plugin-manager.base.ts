@@ -8,10 +8,10 @@ import { IPluginBuilder } from "../types";
 export abstract class PluginManagerBase<P extends IPlugin> implements IPluginManager<P> {
 	_instances = new Map<string, IPlugin>();
 
-	abstract readonly pluginType: string
+	abstract readonly type: string
 
-	getDefinition(pluginId: string): P['definition'] | undefined {
-		return this.pluginDiscovery.getDefinition(pluginId, true);
+	getDefinition(id: string): P['definition'] | undefined {
+		return this.pluginDiscovery.getDefinition(id, true);
 	}
 
 	protected abstract readonly pluginDiscovery: IPluginDiscovery;
@@ -23,22 +23,22 @@ export abstract class PluginManagerBase<P extends IPlugin> implements IPluginMan
 
 	/**
 	 *
-	 * @param pluginId
+	 * @param id
 	 */
-	getInstance<P extends IPlugin = IPlugin>(pluginId: string): P {
+	getInstance<P extends IPlugin = IPlugin>(id: string): P {
 
-		if (!this._instances.has(pluginId)) {
+		if (!this._instances.has(id)) {
 			try {
-				const definition = this.getDefinition(pluginId);
+				const definition = this.getDefinition(id);
 				if (!definition) {
-					throw new Error(`Plugin definition for pluginId: "${pluginId}" not found.`);
+					throw new Error(`Plugin definition for id: "${id}" not found.`);
 				}
-				this._instances.set(pluginId, this.pluginBuilder.build(definition));
+				this._instances.set(id, this.pluginBuilder.build(definition));
 
 			} catch (error: Error | unknown) {
-				throw new PluginInstanceNotCreatedException(this.pluginType, pluginId, error)
+				throw new PluginInstanceNotCreatedException(this.type, id, error)
 			}
 		}
-		return this._instances.get(pluginId) as P;
+		return this._instances.get(id) as P;
 	}
 }

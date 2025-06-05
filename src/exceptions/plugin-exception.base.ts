@@ -1,13 +1,13 @@
 export class PluginException extends Error {
-	constructor(private _pluginType: string, private _pluginId: string, message: string) {
+	constructor(private _type: string, private _id: string, message: string) {
 		super(message);
 	}
 
-	get pluginType() {
-		return this._pluginType;
+	get type() {
+		return this._type;
 	}
 
-	get pluginId() {
-		return this._pluginId;
+	get id() {
+		return this._id;
 	}
 }

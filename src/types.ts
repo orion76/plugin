@@ -1,6 +1,6 @@
 export type TOneOrTwoTuple = [string, string] | [string];
 export interface IPluginDefinition<P extends IPlugin = IPlugin, D extends object = object> {
-	pluginType: string;
+	type: string;
 	id: string;
 	label: string;
 	pluginClass?: IType<P>;
@@ -11,8 +11,8 @@ export interface IPluginDefinition<P extends IPlugin = IPlugin, D extends object
 export interface IPlugin {
 	id: string;
 	label: string;
+	type: string;
 	definition: IPluginDefinition;
-
 }
 
 export type PluginClass<P extends IPlugin> = { new(definition: TPluginDefinition<P>): P }
@@ -30,21 +30,21 @@ export interface IPluginBuilder<P extends IPlugin = IPlugin> {
 }
 
 export interface IPluginDiscovery<D extends IPluginDefinition = IPluginDefinition> {
-	pluginType: string;
+	type: string;
 
-	getDefinition(pluginId: string, exceptionOnInvalid?: boolean): D | undefined;
+	getDefinition(id: string, exceptionOnInvalid?: boolean): D | undefined;
 
 	getDefinitions(): D[];
 
-	hasDefinition(pluginId: string): boolean;
+	hasDefinition(id: string): boolean;
 }
 
 export interface IPluginManager<P extends IPlugin = IPlugin> {
-	getDefinition(pluginId: string): P['definition'] | undefined;
+	getDefinition(id: string): P['definition'] | undefined;
 
 	getDefinitions(): P['definition'][];
 
-	getInstance(pluginId: string): P;
+	getInstance(id: string): P;
 }
 
 export interface IPluginDeriver<D extends object = object> {

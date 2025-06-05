@@ -10,8 +10,8 @@ export class PluginDiscoveryDecoratorTest extends PluginDiscoveryDecorator<IPlug
     protected override hasDeriver(basePLuginDefinition: IPluginDefinition<IPlugin, object>): boolean {
         return basePLuginDefinition.deriverClass !== undefined;
     }
-    override get pluginType() {
-        return this.decorated.pluginType;
+    override get type() {
+        return this.decorated.type;
     };
     protected override decorated: IPluginDiscovery<IPluginDefinition> = new PluginDiscoveryTest();
     protected override derivers = new Map<string, IPluginDeriver<ITestPluginDerivative>>();
@@ -19,7 +19,7 @@ export class PluginDiscoveryDecoratorTest extends PluginDiscoveryDecorator<IPlug
     protected override createDeriver(basePLuginDefinition: IPluginDefinition<IPlugin, ITestPluginDerivative>): IPluginDeriver<ITestPluginDerivative> {
         const { deriverClass } = basePLuginDefinition;
         if (!deriverClass) {
-            throw new PluginException(this.pluginType, basePLuginDefinition.id, 'Plugin deriver class is missing');
+            throw new PluginException(this.type, basePLuginDefinition.id, 'Plugin deriver class is missing');
         }
         return new deriverClass!();
     }

@@ -1,9 +1,9 @@
 export class PluginTypeException extends Error {
-	constructor(private _pluginType: string, message: string) {
+	constructor(private _type: string, message: string) {
 		super(message);
 	}
 
-	get pluginType() {
-		return this._pluginType;
+	get type() {
+		return this._type;
 	}
 }
