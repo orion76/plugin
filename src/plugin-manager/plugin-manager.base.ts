@@ -10,8 +10,11 @@ export abstract class PluginManagerBase<P extends IPlugin> implements IPluginMan
 
 	abstract readonly type: string
 
-	getDefinition(id: string): P['definition'] | undefined {
-		return this.pluginDiscovery.getDefinition(id, true);
+	getDefinition(id: string): P['definition'] {
+		/**
+		 * Throw PluginException is invalid
+		 */
+		return this.pluginDiscovery.getDefinition(id, true)!;
 	}
 
 	protected abstract readonly pluginDiscovery: IPluginDiscovery;

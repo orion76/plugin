@@ -1,6 +1,6 @@
-import { createDebugLogger } from '@orion76/debug-logger';
 import { PluginException } from '../../exceptions';
-import { IPluginDefinition, IPluginDeriver, IPluginDiscovery, TOneOrTwoTuple } from '../../types';
+import { IPluginDefinition, IPluginDeriver, IPluginDiscovery } from '../../types';
+import { splitDerivativedPluginId } from '../../utils';
 
 
 function getUndefinedOrThrowError(exceptionOnInvalid: boolean, errorFactory: () => void): undefined {
@@ -9,12 +9,6 @@ function getUndefinedOrThrowError(exceptionOnInvalid: boolean, errorFactory: () 
 	}
 	throw errorFactory();
 }
-export const DEBUG_LOGGER_PREFIX = '*** Plugin ';
-const debug = createDebugLogger({
-	enabled: false,
-	id: 'plugin-discovery-decorator',
-	label: DEBUG_LOGGER_PREFIX + '[PluginDiscoveryDecorator]',
-});
 
 export abstract class PluginDiscoveryDecorator<
 	BasePluginDef extends IPluginDefinition = IPluginDefinition,
@@ -39,22 +33,22 @@ export abstract class PluginDiscoveryDecorator<
 
 	getDefinition(id: string, exceptionOnInvalid?: boolean): BasePluginDef | PluginDef | undefined {
 		if (!this._definitionsCache.has(id)) {
-			const definition = this.createPluginDefinition(id, exceptionOnInvalid);
+			const definition = this._createPluginDefinition(id, exceptionOnInvalid);
 			if (definition) {
 				this._definitionsCache.set(id, definition)
 			}
 		}
 		const _definition = this._definitionsCache.get(id);
-		const { type } = this;
-		debug('getDefinition(id)', { type, id, definition: _definition });
+
+		if (!_definition && exceptionOnInvalid) {
+			throw new PluginException(this.type, id, 'Definition not found.');
+		}
+
 		return _definition;
 	}
 	getDefinitions(): (BasePluginDef | PluginDef)[] {
 		const basePluginDefinitions = this.decorated.getDefinitions();
 		const derivatives = this.getDerivatives(basePluginDefinitions)
-
-		const { type } = this;
-		debug('getDefinition(id)', { type, baseDefinitions: basePluginDefinitions, derivatives });
 
 		return derivatives;
 	}
@@ -62,11 +56,20 @@ export abstract class PluginDiscoveryDecorator<
 	hasDefinition(id: string): boolean {
 		return Boolean(this.getDefinition(id));
 	}
-	protected mergeDerivativeDefinition(id: string, pluginDefinition: BasePluginDef, derivativeDefinition: DerivDef): PluginDef {
+	protected createPluginDefinition(id: string, pluginDefinition: BasePluginDef, derivativeDefinition: DerivDef): PluginDef {
 		return { ...pluginDefinition, ...derivativeDefinition, id } as PluginDef;
 	}
-	protected createPluginDefinition(id: string, exceptionOnInvalid = false): PluginDef | BasePluginDef | undefined {
-		const [basePluginId, derivativeId] = this.decodePluginId(id);
+
+	protected getBasePluginId(id: string): string {
+		return splitDerivativedPluginId(id)[0];
+	}
+
+	protected getDerivativeId(id: string): string | undefined {
+		return splitDerivativedPluginId(id)[1];
+	}
+
+	private _createPluginDefinition(id: string, exceptionOnInvalid = false): PluginDef | BasePluginDef | undefined {
+		const basePluginId = this.getBasePluginId(id);
 		const basePluginDefinition = this.decorated.getDefinition(basePluginId);
 
 		if (!basePluginDefinition) {
@@ -76,6 +79,7 @@ export abstract class PluginDiscoveryDecorator<
 			)
 		}
 
+		const derivativeId = this.getDerivativeId(id)
 		if (!derivativeId) {
 			return basePluginDefinition;
 		}
@@ -97,17 +101,9 @@ export abstract class PluginDiscoveryDecorator<
 			)
 		}
 
-		return this.mergeDerivativeDefinition(id, basePluginDefinition, derivativePluginDefinition);
+		return this.createPluginDefinition(id, basePluginDefinition, derivativePluginDefinition);
 	}
 
-
-
-	protected decodePluginId(id: string): TOneOrTwoTuple {
-		return id.split(':') as TOneOrTwoTuple;
-	}
-	protected encodePluginId(basePluginId: string, derivativeId: string) {
-		return `${basePluginId}:${derivativeId} `;
-	}
 	protected getDeriver(basePLuginDefinition: BasePluginDef): IPluginDeriver<DerivDef> | undefined {
 		const { id: id } = basePLuginDefinition;
 
@@ -117,6 +113,7 @@ export abstract class PluginDiscoveryDecorator<
 		}
 		return this.derivers.get(id)!;
 	}
+
 
 	protected getDerivatives(basePluginDefinitions: BasePluginDef[]): (BasePluginDef | PluginDef)[] {
 
@@ -132,11 +129,10 @@ export abstract class PluginDiscoveryDecorator<
 			const derivativeDefinitions = deriver.getDerivativeDefinitions(basePluginDef);
 
 			derivativeDefinitions.forEach(derivativeDef => {
-				const derivativeId = deriver.getDerivativeId(derivativeDef);
-				const id = this.encodePluginId(basePluginId, derivativeId);
+				const id = deriver.createPluginId(basePluginDef, derivativeDef);
 
 				if (!this._definitionsCache.has(id)) {
-					const pluginDef = this.mergeDerivativeDefinition(id, basePluginDef, derivativeDef);
+					const pluginDef = this.createPluginDefinition(id, basePluginDef, derivativeDef);
 					this._definitionsCache.set(id, pluginDef);
 				}
 

@@ -1,8 +1,9 @@
-export type TGetIdFunction<T> = (item: T) => string
+import { TOneOrTwoTuple } from "./types"
 
-export function arrayToMap<T>(items: T[], getIdFunction: TGetIdFunction<T>): Map<string, T> {
-    return items.reduce(
-        (mapItems, item) => mapItems.set(getIdFunction(item), item),
-        new Map<string, T>()
-    )
+export function createDerivativedPluginId(basePluginId: string, derivativeId: string): string {
+    return `${basePluginId}:${derivativeId}`
+}
+
+export function splitDerivativedPluginId(id: string): TOneOrTwoTuple {
+    return id.split(':') as TOneOrTwoTuple;
 }

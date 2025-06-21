@@ -31,24 +31,20 @@ export interface IPluginBuilder<P extends IPlugin = IPlugin> {
 
 export interface IPluginDiscovery<D extends IPluginDefinition = IPluginDefinition> {
 	type: string;
-
 	getDefinition(id: string, exceptionOnInvalid?: boolean): D | undefined;
-
 	getDefinitions(): D[];
-
 	hasDefinition(id: string): boolean;
 }
 
 export interface IPluginManager<P extends IPlugin = IPlugin> {
-	getDefinition(id: string): P['definition'] | undefined;
-
+	getDefinition(id: string): P['definition'];
 	getDefinitions(): P['definition'][];
-
 	getInstance(id: string): P;
 }
 
 export interface IPluginDeriver<D extends object = object> {
 	getDerivativeId(derivative: D): string,
+	createPluginId(basePluginDefinition: IPluginDefinition, derivativeDef: D): string;
 	getDerivativeDefinition(derivativeId: string, basePluginDefinition: IPluginDefinition): D | undefined;
-	getDerivativeDefinitions(basePluginDefinition: IPluginDefinition): D[];
+	getDerivativeDefinitions(basePluginDefinition?: IPluginDefinition): D[];
 }
