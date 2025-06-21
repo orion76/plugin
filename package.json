@@ -12,7 +12,7 @@
     "build:github": "node ./node_modules/.bin/ng build orion76-plugin",
     "build:watch": "ng build --watch",
     "bw": "npm run build:watch",
-    "test": "ng test --karma-config karma-terminal.conf.js",
+    "test": "ng test --karma-config karma-terminal.conf.js --watch=false",
     "test:console": "ng test --karma-config karma-terminal.conf.js",
     "test:browser": "ng test --karma-config karma.conf.js",
     "tc": "npm run test:console",
