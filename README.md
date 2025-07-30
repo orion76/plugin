@@ -14,22 +14,21 @@ npm install --save @orion76/plugin
 > Plugin architecture is a design pattern in software engineering where the application is structured in a way that allows pieces of its functionality, termed as 'plugins', to be added and removed seamlessly. These plugins are standalone components that interact with the main application, providing specific features or functionalities.
 
    
-      
+	  
 * 
 
 
 
 ## Основная задача
-Готовый  инструмент для инмлементации архитектурного паттерна "Plugin". 
-А так же для разделения слоев приложения (Clean Architectureб DDD и т.п.).
+Готовый инструмент для реализации архитектурного паттерна "Plugin". 
+А также для разделения слоев приложения (Clean Architecture, DDD и т.п.).
 
+Данная библиотека кроссплатформенная, то есть содержит только интерфейсы, абстрактные классы и общую логику работы системы "Plugin".
 
-Данная библиотека "кросплатформенна", т.е. содержит только интерфейсы, абстрактные классы и общую логику работы системы "Plugin"
-
-Для интеграции системы с платформой Angular 2+ предназначена библиотека
+Для интеграции системы с платформой Angular 2+ предназначена отдельная библиотека
 [@orion76/ng-plugin](https://github.com/orion76/ng-plugin)   
 
-> Пример использования системы Plugin: [@orion76/ng-logger](https://github.com/orion76/ng-logger)   
+> Пример использования системы Plugin: [@orion76/ng-logger](https://github.com/orion76/ng-logger)
 "Плагинами" являются инстансы логгеров и транспортов логов
 Проект написан больше в целях демонстрации работы системы Plugin
 
@@ -63,7 +62,7 @@ interface IPluginDefinition<P extends IPlugin = IPlugin, D extends object = obje
 ### Interface "IPlugin"
 ```
 interface IPlugin{
-    type: string;
+	type: string;
 	id: string;
 	label: string;
 	definition: IPluginDefinition;
@@ -98,7 +97,7 @@ PluginManager работает с плагинами определенного 
 
 * getInstance(id: string): P;
 Возвращает непосредственно инстанс класса плагина по его ID
-    
+	
 ---
 **Кратко, один из распространеных сценариев использования:**      
 
@@ -125,6 +124,7 @@ PluginManager имеет следующие классы-зависимости:
 > Реализация класса в основном зависит от платформы использования данной библиотеки.   
 > Например в библиотеке [@orion76/ng-plugin](https://github.com/orion76/ng-plugin), PluginBuilder для билда инстанса плагина использует стандартную систему Dependency Injection Angular 17+.
 > т.е. классы плагинов являются injectable и в свою очередь для внедрения собстенных зависимостей могут использовать декоратор **@Inject** или функцию **inject()**.   
+
 
 ### PluginDiscovery
 

@@ -18,7 +18,6 @@ describe('PluginBuilder', () => {
     });
     describe('method  "build(definition:IPluginDefinition)" should return plugin instance', () => {
         it('plugin from  pluginClass', () => {
-            debugger;
             const plugin = pluginBuilder.build(pluginDefinitionTest)
             expect(plugin).toBeInstanceOf(PluginTestOne);
         });
