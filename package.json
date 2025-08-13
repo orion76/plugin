@@ -1,6 +1,6 @@
 {
   "name": "@orion76/plugin",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Plugin clear architecture common library",
   "type": "module",
   "main": "lib/index.js",
