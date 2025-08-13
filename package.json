@@ -46,5 +46,27 @@
   "bugs": {
     "url": "https://github.com/orion76/plugin/issues"
   },
-  "homepage": "https://github.com/orion76/plugin#readme"
+  "homepage": "https://github.com/orion76/plugin#readme",
+  "keywords": [
+    "plugin",
+    "plugins",
+    "plugin-architecture",
+    "plugin-system",
+    "extensibility",
+    "modular",
+    "modularity",
+    "typescript",
+    "javascript",
+    "architecture",
+    "clean-architecture",
+    "ddd",
+    "dependency-injection",
+    "framework-agnostic",
+    "angular",
+    "orion76",
+    "plugin-manager",
+    "plugin-pattern",
+    "software-design",
+    "library"
+  ]
 }
