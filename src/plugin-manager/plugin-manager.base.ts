@@ -6,7 +6,7 @@ import { IPluginBuilder } from "../types";
 
 
 export abstract class PluginManagerBase<P extends IPlugin> implements IPluginManager<P> {
-	_instances = new Map<string, IPlugin>();
+	_instances = new Map<string, P>();
 
 	abstract readonly type: string
 
@@ -17,10 +17,10 @@ export abstract class PluginManagerBase<P extends IPlugin> implements IPluginMan
 		return this.pluginDiscovery.getDefinition(id, true)!;
 	}
 
-	protected abstract readonly pluginDiscovery: IPluginDiscovery;
-	protected abstract readonly pluginBuilder: IPluginBuilder;
+	protected abstract readonly pluginDiscovery: IPluginDiscovery<P['definition']>;
+	protected abstract readonly pluginBuilder: IPluginBuilder<P>;
 
-	getDefinitions<P extends IPlugin = IPlugin>(): P['definition'][] {
+	getDefinitions(): P['definition'][] {
 		return this.pluginDiscovery.getDefinitions();
 	}
 
@@ -28,7 +28,7 @@ export abstract class PluginManagerBase<P extends IPlugin> implements IPluginMan
 	 *
 	 * @param id
 	 */
-	getInstance<P extends IPlugin = IPlugin>(id: string): P {
+	getInstance(id: string): P {
 
 		if (!this._instances.has(id)) {
 			try {

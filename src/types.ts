@@ -1,4 +1,12 @@
+/**
+ * Кортеж из одной или двух строк, используется для идентификаторов плагинов и их производных.
+ */
 export type TOneOrTwoTuple = [string, string] | [string];
+/**
+ * Описание (definition) плагина. Используется для конфигурирования и регистрации плагинов.
+ * @template P Тип плагина
+ * @template D Дополнительные данные для дериваторов
+ */
 export interface IPluginDefinition<P extends IPlugin = IPlugin, D extends object = object> {
 	type: string;
 	id: string;
@@ -8,6 +16,9 @@ export interface IPluginDefinition<P extends IPlugin = IPlugin, D extends object
 	disabled?: boolean;
 }
 
+/**
+ * Базовый интерфейс плагина.
+ */
 export interface IPlugin {
 	id: string;
 	label: string;
@@ -15,17 +26,41 @@ export interface IPlugin {
 	definition: IPluginDefinition;
 }
 
+/**
+ * Тип конструктора класса плагина.
+ */
 export type PluginClass<P extends IPlugin> = { new(definition: TPluginDefinition<P>): P }
+/**
+ * Тип конструктора класса-дериватора.
+ */
 export type DeriverClass<D extends IPluginDeriver> = { new(): D }
 
+ 
+/**
+ * Универсальный тип конструктора для любого класса.
+ * @template T
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type IType<T> = { new(...args: any[]): T }
 
+/**
+ * Тип определения плагина для конкретного класса плагина.
+ */
 export type TPluginDefinition<P extends IPlugin> = P['definition'];
 
+/**
+ * Фабрика для создания экземпляра плагина.
+ */
 export type TPluginFactory<P extends IPlugin> = (definition: TPluginDefinition<P>, ...vars: unknown[]) => P;
 
+/**
+ * Интерфейс билдера плагинов (создание экземпляров по определению).
+ */
 export interface IPluginBuilder<P extends IPlugin = IPlugin> {
+	/**
+	 * Создать экземпляр плагина по определению
+	 * @param definition Определение плагина
+	 */
 	build(definition: TPluginDefinition<P>): P;
 }
 
